@@ -8,9 +8,9 @@ ___
 ## Profesor:
 - Darío Cuda
 ## Tutor:
-- Estaben Quiroz
+- Esteban Quiroz
 ___
-## Integrante 
+## Autor del proyecto: 
 - Ángel Fabián Cabello
 ___
 
@@ -18,10 +18,9 @@ ___
 ![Tinkercad](./img/ProyectoEstacionesSubte.png)
 ___
 ## Descripción
-El presente modelo de Tinkercad simula la llegada de una formación de subte a cuatro estaciones consecutivas de la linea C, en el siguiente orden: Moreno, Independiencia, San Juan y Constitución. Entonces, al iniciar la simulación, la formación llega a la estación de Moreno, se enciende un led (el rojo) indicando su llegada, el display de 7 segmentos muestra el número de estaciones faltantes para llegar a destino y suena el zumbador a modo de sirena de aviso. Además, a medida que la formación avanza, se modifica el tono del zumbador de manera que al llegar a destino, el tono en este punto sea distingible de los anteriores. Este ciclo se repite indicando el avance de la formación a través de las estaciones.  
-Por último, el modelo también incluye un interruptor para reiniciar el ciclo antes mencionado.
+El presente modelo de Tinkercad simula el recorrido de una formación de subte a cuatro estaciones consecutivas de la linea C, en el siguiente orden: Moreno, Independiencia, San Juan y Constitución. Al iniciar la simulación, la formación llega a la estación de Moreno, se enciende un led (el rojo) indicando su llegada, el display de 7 segmentos muestra el número de estaciones faltantes para llegar a destino y suena el zumbador a modo de sirena de aviso. Además, a medida que la formación avanza, se modifica el tono del zumbador de manera que al llegar a destino, el tono en este punto sea distingible de los anteriores. Este ciclo se repite indicando el avance de la formación a través de las estaciones. Por último, el modelo también incluye un interruptor para reiniciar el recorrido antes mencionado.
 ___
-## Elementos de Tinkercad utilizados
+## :electric_plug: Elementos de Tinkercad utilizados
 - Arduino: 1 unidad
 - Display de 7 segmentos: 1 unidad
 - LEDs: 4 unidades
@@ -30,7 +29,7 @@ ___
 - Resistencia de 220 Ohm: 11 unidades
 - Cables
 ___
-## Programación del Arduino
+## :computer: Programación del Arduino
 El código de control del Arduino está programado en C++.
 ### 1. Etiquetado de pines
 ~~~
@@ -62,7 +61,7 @@ int inicio = millis();
 ### 3. Funciones
 
 ### :file_folder: 3.1. __setup__
-Los pines correspondientes a los LEDs y al zumbador se declaran como OUTPUT (salida). Solamente el pin del interruptor se declara INPUT_PULLUP (entrada), por cual al aplicarle la función digitalRead marcará 0 cuando reciba voltaje y 1, cuando no.
+Los pines correspondientes a los LEDs y al zumbador se declaran como OUTPUT (salida). Solamente el pin del interruptor se declara INPUT_PULLUP (entrada), o sea, que al aplicarle la función digitalRead marcará 0 cuando reciba voltaje y 1, cuando no.
 ~~~
 void setup()
 {

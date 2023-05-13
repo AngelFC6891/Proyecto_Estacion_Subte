@@ -1,0 +1,184 @@
+// C++ code
+//
+
+#define A 11
+#define B 12
+#define C A3
+#define D A4
+#define E A5
+#define F 10
+#define G 9
+#define BUZZER A0
+#define INTERRUPTOR 8
+#define LED_ROJO 7
+#define LED_AZUL 6
+#define LED_VERDE 5
+#define LED_AMARILLO 4
+
+void setup()
+{
+  pinMode(A,OUTPUT);
+  pinMode(B,OUTPUT);
+  pinMode(C,OUTPUT);
+  pinMode(D,OUTPUT);
+  pinMode(E,OUTPUT);
+  pinMode(F,OUTPUT);
+  pinMode(G,OUTPUT);
+  pinMode(BUZZER,OUTPUT);
+  pinMode(INTERRUPTOR,INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+int DESACTIVAR = 4;
+bool flag_presionado = false;
+int reinicio;
+int tiempo_apagado;
+int tiempo_transcurrido;
+int inicio = millis();
+
+void loop()
+{ 
+  int entradaINTERRUPTOR = digitalRead(INTERRUPTOR);
+  
+  if(entradaINTERRUPTOR == 0){
+    if(flag_presionado == false){
+      tiempo_transcurrido = millis() - inicio;
+      activar_todo(temporizador(tiempo_transcurrido));
+    }
+    else{
+      reinicio = millis() - tiempo_apagado;
+      activar_todo(temporizador(reinicio));
+    }
+  }
+  else{
+    activar_todo(DESACTIVAR);
+    delay(10);
+    tiempo_apagado = millis();
+    if(flag_presionado == false){
+      flag_presionado = true;
+    }
+  }
+}
+
+unsigned long temporizador(int milliseg)
+{
+  int digito_creciente = (milliseg / 1000) % 4;
+  int digito_decreciente = 3 - digito_creciente;
+  return digito_decreciente;
+}
+
+void activar_buzzer(int digito)
+{
+  digitalWrite(BUZZER,1);
+  switch(digito)
+  {
+  	case 3:
+      tone(BUZZER,600);
+      break;
+  	case 2:
+      tone(BUZZER,400);
+      break;
+  	case 1:
+      tone(BUZZER,250);
+      break;
+    case 0:
+      tone(BUZZER,185);
+      break;
+  }
+  delay(500);
+  noTone(BUZZER);
+  digitalWrite(BUZZER,0);
+  delay(500);
+}
+
+void activar_todo(int digito_actual)
+{
+  switch(digito_actual)
+  {
+    case 4:
+      activar_display(DESACTIVAR);
+      digitalWrite(LED_ROJO,0);
+      digitalWrite(LED_AZUL,0);
+      digitalWrite(LED_VERDE,0);
+      digitalWrite(LED_AMARILLO,0);
+      break;
+    case 3:
+      activar_display(DESACTIVAR);
+      digitalWrite(LED_AMARILLO,0);
+      delay(20);
+      digitalWrite(LED_ROJO,1);
+      delay(10);
+      activar_display(digito_actual);
+      activar_buzzer(digito_actual);
+      break;
+    case 2:
+      activar_display(DESACTIVAR);
+      digitalWrite(LED_ROJO,0);
+      delay(20);
+      digitalWrite(LED_AZUL,1);
+      delay(10);
+      activar_display(digito_actual);
+      activar_buzzer(digito_actual);
+      break;
+    case 1:
+      activar_display(DESACTIVAR);
+      digitalWrite(LED_AZUL,0);
+      delay(20);
+      digitalWrite(LED_VERDE,1);
+      delay(10);
+      activar_display(digito_actual);
+      activar_buzzer(digito_actual);
+	  break;
+  	case 0:
+      activar_display(DESACTIVAR);
+      digitalWrite(LED_VERDE,0);
+      delay(20);
+      digitalWrite(LED_AMARILLO,1);
+      delay(10);
+      activar_display(digito_actual);    
+      activar_buzzer(digito_actual);
+      break;
+  }
+}
+
+void activar_display(int digito)
+{
+  switch(digito)
+  {
+    case 0:
+      digitalWrite(A,1);
+      digitalWrite(B,1);
+      digitalWrite(C,1);
+      digitalWrite(D,1);
+      digitalWrite(E,1);
+      digitalWrite(F,1);
+      break;
+    case 1:
+      digitalWrite(B,1);
+      digitalWrite(C,1);
+      break;
+    case 2:
+      digitalWrite(A,1);
+      digitalWrite(B,1);
+      digitalWrite(D,1);
+      digitalWrite(E,1);
+      digitalWrite(G,1);
+      break;
+    case 3:
+      digitalWrite(A,1);
+      digitalWrite(B,1);
+      digitalWrite(C,1);
+      digitalWrite(D,1);
+      digitalWrite(G,1);
+      break;
+    case 4:
+      digitalWrite(A,0);
+      digitalWrite(B,0);
+      digitalWrite(C,0);
+      digitalWrite(D,0);
+      digitalWrite(E,0);
+      digitalWrite(F,0);
+      digitalWrite(G,0);
+ 	  break;
+  }
+}

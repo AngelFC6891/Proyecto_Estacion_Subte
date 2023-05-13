@@ -17,7 +17,7 @@
 
 
 ## Descripción
-El presente modelo de Arduino simula la llegada de una formación de subte a cuatro estaciones consecutivas de la linea C, en el siguiente orden: Moreno, Independiencia, San Juan y Constitución. Entonces, al iniciar la simulación, el subte comienza su recorrido en la estación de Moreno, se enciende un led, el display de 7 segmentos indica el número de estaciones faltantes para llegar a destino y suena el zumbador a modo de sirena de aviso. Luego este ciclo se repite indicando el avance el subte a través de las estaciones.
+El presente modelo de Arduino simula la llegada de una formación de subte a cuatro estaciones consecutivas de la linea C, en el siguiente orden: Moreno, Independiencia, San Juan y Constitución. Entonces, al iniciar la simulación, el subte llega a la estación de Moreno, se enciende un led (el rojo) indicando su llegada, el display de 7 segmentos muestra el número de estaciones faltantes para llegar a destino y suena el zumbador a modo de sirena de aviso. Luego este ciclo se repite indicando el avance el subte a través de las estaciones. Nótese que a medida que el subte avanza se modifica el tono del zumbador de manera que al llegar a destino, el tono en este punto sea distingible de los anteriores
 
 ## Función principal
 Esta funcion se encarga de encender y apagar los leds.

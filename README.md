@@ -20,14 +20,18 @@
 El presente modelo de Arduino simula la llegada de una formación de subte a cuatro estaciones consecutivas de la linea C, en el siguiente orden: Moreno, Independiencia, San Juan y Constitución. Entonces, al iniciar la simulación, el subte llega a la estación de Moreno, se enciende un led (el rojo) indicando su llegada, el display de 7 segmentos muestra el número de estaciones faltantes para llegar a destino y suena el zumbador a modo de sirena de aviso. Luego este ciclo se repite indicando el avance el subte a través de las estaciones. Nótese que a medida que el subte avanza se modifica el tono del zumbador de manera que al llegar a destino, el tono en este punto sea distingible de los anteriores
 
 ## Funciones utilizadas:
-:page_facing_up: activar_todo
+:file_folder: activar_todo
 
-Esta función se encarga de:
-- encender y apagar los leds
-- encender y apagar los segmentos del display mostrando el dígito correspondiente
-- encender y apagar el buzzer
+Esta función:
+> recibe un entero entre 0 y 4 (incluidos);
+> no tiene retorno;
+> se encarga de:
+- encender y apagar los leds mediante digitalWrite;
+- encender y apagar los segmentos del display mostrando el dígito correspondiente, a través de la función auxiliar "activar_display";
+- encender y apagar el buzzer a través de la función auxiliar "activar_buzzer" (el apagado del buzzer se realiza por defecto dentro de esta última)
 
-código:
+> código:
+
 ~~~ C++
 void activar_todo(int digito_actual)
 {
@@ -66,7 +70,7 @@ void activar_todo(int digito_actual)
       delay(10);
       activar_display(digito_actual);
       activar_buzzer(digito_actual);
-	  break;
+	    break;
   	case 0:
       activar_display(DESACTIVAR);
       digitalWrite(LED_VERDE,0);
@@ -80,34 +84,23 @@ void activar_todo(int digito_actual)
 }
 ~~~
 
-:page_facing_up: 
+:file_folder: activar_display
 
-:page_facing_up:
+Esta función 
 
-:page_facing_up:
+:file_folder:
+
+:file_folder:
 
 
-:page_facing_up: loop (bucle)
+:file_folder: loop (bucle)
 
 
-B0, B1, B2, B3 son #define que utilizamos para agregar los leds, asociandolo a pines de la placa arduino.
-
-(Breve explicación de la función)
-
-~~~ C (lenguaje en el que esta escrito)
-void EncenderBinario(int estado3, int estado2,int estado1,int estado0)
-{
-  digitalWrite(B3,estado3);
-  digitalWrite(B2,estado2);
-  digitalWrite(B1,estado1);
-  digitalWrite(B0,estado0);
-}
-~~~
 
 ## :robot: Link al proyecto
 - [proyecto](https://www.tinkercad.com/things/hq86m6GMRpG)
 ## :tv: Link al video del proceso
-- [video](N/A)
+- [N/A]
 
 ---
 ### Fuentes
@@ -117,7 +110,7 @@ void EncenderBinario(int estado3, int estado2,int estado1,int estado0)
 
 - [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
 
-- [Tutorial](https://www.youtube.com/watch?v=oxaH9CFpeEE).
+- [Tutorial GitHub](https://www.youtube.com/watch?v=QaM7zoaEmjo).
 
 - [Emojis](https://gist.github.com/rxaviers/7360908).
 

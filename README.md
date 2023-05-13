@@ -32,7 +32,7 @@ ___
 ## :computer: Programación del Arduino
 El código de control del Arduino está programado en C++.
 ### 1. Etiquetado de pines
-~~~
+~~~ C++
 #define A 11
 #define B 12
 #define C A3
@@ -50,7 +50,7 @@ El código de control del Arduino está programado en C++.
 
 ### 2. Variables globales
 Se declaran las siguientes variables globales, cuya utilidad se verá más adelante:
-~~~
+~~~ C++
 int DESACTIVAR = 4;
 bool flag_presionado = false;
 int reinicio;
@@ -62,7 +62,7 @@ int inicio = millis();
 
 ### :file_folder: 3.1. __setup__
 Los pines correspondientes a los LEDs y al zumbador se declaran como OUTPUT (salida). Solamente el pin del interruptor se declara INPUT_PULLUP (entrada), o sea, que al aplicarle la función digitalRead marcará 0 cuando reciba voltaje y 1, cuando no.
-~~~
+~~~ C++
 void setup()
 {
   pinMode(A,OUTPUT);
@@ -78,43 +78,30 @@ void setup()
 }
 ~~~
 
-### :file_folder: 3.2.  __loop__
-
-~~~
-void loop()
-{ 
-  int entradaINTERRUPTOR = digitalRead(INTERRUPTOR);
-  
-  if(entradaINTERRUPTOR == 0){
-    if(flag_presionado == false){
-      tiempo_transcurrido = millis() - inicio;
-      activar_todo(temporizador(tiempo_transcurrido));
-    }
-    else{
-      reinicio = millis() - tiempo_apagado;
-      activar_todo(temporizador(reinicio));
-    }
-  }
-  else{
-    activar_todo(DESACTIVAR);
-    delay(10);
-    tiempo_apagado = millis();
-    if(flag_presionado == false){
-      flag_presionado = true;
-    }
-  }
+### :file_folder: 3.2. __calcular_digito__
+Esta función:
+- recibe valores enteros de la función __millis__;
+- retorna valores enteros entre 3 y 0 (incluidos);
+- funcionamiento:
+  - recibe los milisegundos transcurridos en __loop__, los divide por 1000 para pasarlos a segundos y al resultado le aplica módulo 4, ya que de este modo los únicos resultados posibles van a ser 0, 1, 2 y 3;
+  - dado que los milisegundos son crecientes, y por lo tanto también el ciclo de restos 0,1, 2 y 3; para hacerlos decrecientes, a 3 se le restan dichos restos;
+  - el resultado es el ciclo decreciente 3, 2, 1, 0; y de ahí el retorno antes descripto.
+~~~ C++
+unsigned long calcular_digito(int milliseg)
+{
+  int digito = 3 - ((milliseg / 1000) % 4);
+  return digito;
 }
 ~~~
 
-
-### :file_folder: 3.3.  __activar_todo__
+### :file_folder: 3.3. __activar_todo__
 Esta función:
-- recibe un entero entre 0 y 4 (incluidos);
+- recibe valores enteros entre 0 y 4 (incluidos);
 - no tiene retorno;
-- se encarga de:
-  - encender y apagar los LEDs mediante digitalWrite;
-  - encender y apagar los segmentos del display mostrando el dígito correspondiente a través de la función auxiliar __activar_display__;
-  - encender y apagar el buzzer a través de la función auxiliar __activar_buzzer__ (el apagado del buzzer se realiza por defecto dentro de esta última)
+- funcionamiento:
+  - enciende y apaga los LEDs mediante __digitalWrite__;
+  - enciende y apaga los segmentos del display mostrando el dígito correspondiente a través de la función auxiliar __activar_display__;
+  - enciende y apaga el zumbador a través de la función auxiliar __activar_buzzer__ (el apagado del zumbador se realiza por defecto dentro de esta última)
 
 ~~~ C++
 void activar_todo(int digito_actual)
@@ -167,26 +154,120 @@ void activar_todo(int digito_actual)
   }
 }
 ~~~
+### :file_folder: 3.2. __loop__
 
-:file_folder: activar_display
+~~~ C++
+void loop()
+{ 
+  int entradaINTERRUPTOR = digitalRead(INTERRUPTOR);
+  
+  if(entradaINTERRUPTOR == 0){
+    if(flag_presionado == false){
+      tiempo_transcurrido = millis() - inicio;
+      activar_todo(calcular_digito(tiempo_transcurrido));
+    }
+    else{
+      reinicio = millis() - tiempo_apagado;
+      activar_todo(calcular_digito(reinicio));
+    }
+  }
+  else{
+    activar_todo(DESACTIVAR);
+    delay(10);
+    tiempo_apagado = millis();
+    if(flag_presionado == false){
+      flag_presionado = true;
+    }
+  }
+}
+~~~
 
-Esta función 
+## :file_folder: __activar_display__
+Esta función:
+- recibe un entero entre 0 y 4 (incluidos);
+- no tiene retorno;
+- se encarga de: 
+~~~ C++
+void activar_display(int digito)
+{
+  switch(digito)
+  {
+    case 0:
+      digitalWrite(A,1);
+      digitalWrite(B,1);
+      digitalWrite(C,1);
+      digitalWrite(D,1);
+      digitalWrite(E,1);
+      digitalWrite(F,1);
+      break;
+    case 1:
+      digitalWrite(B,1);
+      digitalWrite(C,1);
+      break;
+    case 2:
+      digitalWrite(A,1);
+      digitalWrite(B,1);
+      digitalWrite(D,1);
+      digitalWrite(E,1);
+      digitalWrite(G,1);
+      break;
+    case 3:
+      digitalWrite(A,1);
+      digitalWrite(B,1);
+      digitalWrite(C,1);
+      digitalWrite(D,1);
+      digitalWrite(G,1);
+      break;
+    case 4:
+      digitalWrite(A,0);
+      digitalWrite(B,0);
+      digitalWrite(C,0);
+      digitalWrite(D,0);
+      digitalWrite(E,0);
+      digitalWrite(F,0);
+      digitalWrite(G,0);
+ 	  break;
+  }
+}
+~~~
 
-:file_folder:
-
-:file_folder:
-
-
-:file_folder: loop (bucle)
-
-
-
+## :file_folder: __activar_buzzer__
+Esta función:
+- recibe un entero entre 0 y 4 (incluidos);
+- no tiene retorno;
+- se encarga de:
+~~~ C++
+void activar_buzzer(int digito)
+{
+  digitalWrite(BUZZER,1);
+  switch(digito)
+  {
+  	case 3:
+      tone(BUZZER,600);
+      break;
+  	case 2:
+      tone(BUZZER,400);
+      break;
+  	case 1:
+      tone(BUZZER,250);
+      break;
+    case 0:
+      tone(BUZZER,185);
+      break;
+  }
+  delay(500);
+  noTone(BUZZER);
+  digitalWrite(BUZZER,0);
+  delay(500);
+}
+~~~
+___
 ## :robot: Link al proyecto
 - [proyecto](https://www.tinkercad.com/things/hq86m6GMRpG)
+___
 ## :tv: Link al video del proceso
-- [N/A]
-
----
+- N/A
+___
 ### Fuentes
 - [Consejos para documentar](https://www.sohamkamani.com/how-to-write-good-documentation/#architecture-documentation).
 
@@ -198,7 +279,7 @@ Esta función
 
 - [Emojis](https://gist.github.com/rxaviers/7360908).
 
----
+___
 
 
 

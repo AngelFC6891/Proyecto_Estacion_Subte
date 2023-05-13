@@ -43,11 +43,11 @@ void loop()
   if(entradaINTERRUPTOR == 0){
     if(flag_presionado == false){
       tiempo_transcurrido = millis() - inicio;
-      activar_todo(temporizador(tiempo_transcurrido));
+      activar_todo(calcular_digito(tiempo_transcurrido));
     }
     else{
       reinicio = millis() - tiempo_apagado;
-      activar_todo(temporizador(reinicio));
+      activar_todo(calcular_digito(reinicio));
     }
   }
   else{
@@ -60,11 +60,10 @@ void loop()
   }
 }
 
-unsigned long temporizador(int milliseg)
+unsigned long calcular_digito(int milliseg)
 {
-  int digito_creciente = (milliseg / 1000) % 4;
-  int digito_decreciente = 3 - digito_creciente;
-  return digito_decreciente;
+  int digito = 3 - ((milliseg / 1000) % 4);
+  return digito;
 }
 
 void activar_buzzer(int digito)

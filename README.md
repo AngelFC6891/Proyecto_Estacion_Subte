@@ -1,18 +1,23 @@
-# Ejemplo Documentación 
+# Proyecto Estaciones de Subte
 ![Tinkercad](./img/ArduinoTinkercad.jpg)
 
+## Materia:
+- Sistemas de Procesamiento de Datos
 
-## Integrantes 
-- Esteban Marcelo Quiroz 
-- Dario Cuda 
+## Profesor:
+- Darío Cuda
+## Tutor:
+- Estaben Quiroz
 
+## Integrante 
+- Ángel Fabián Cabello
 
-## Proyecto: Contador binario.
-![Tinkercad](./img/ContadorBinario.png)
+## Proyecto: Estaciones de Subte
+![Tinkercad](./img/ProyectoEstacionesSubte.png)
 
 
 ## Descripción
-En este parrafo deberan describir que funcion cumple su proyecto. Que solucion esta ofreciendo.
+El presente modelo de Arduino simula la llegada de una formación de subte a cuatro estaciones consecutivas de la linea C, en el siguiente orden: Moreno, Independiencia, San Juan y Constitución. Entonces, al iniciar la simulación, el subte comienza su recorrido en la estación de Moreno, se enciende un led, el display de 7 segmentos indica el número de estaciones faltantes para llegar a destino y suena el zumbador a modo de sirena de aviso. Luego este ciclo se repite indicando el avance el subte a través de las estaciones.
 
 ## Función principal
 Esta funcion se encarga de encender y apagar los leds.
@@ -32,9 +37,9 @@ void EncenderBinario(int estado3, int estado2,int estado1,int estado0)
 ~~~
 
 ## :robot: Link al proyecto
-- [proyecto](https://www.tinkercad.com/things/aOYiibnDjWu)
+- [proyecto](https://www.tinkercad.com/things/hq86m6GMRpG)
 ## :tv: Link al video del proceso
-- [video](https://www.youtube.com/watch?v=VyGjE8kx-O0)
+- [video](N/A)
 
 ---
 ### Fuentes

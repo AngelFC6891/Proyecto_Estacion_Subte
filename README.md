@@ -81,7 +81,7 @@ void setup()
 ### :file_folder: 3.2. __calcular_digito__
 Esta función:
 - recibe valores enteros de la función __millis__;
-- retorna valores enteros entre 3 y 0 (incluidos);
+- retorna valores enteros entre 3 y 0 (incluidos y en ese orden);
 - funcionamiento:
   - recibe los milisegundos transcurridos en __loop__, los divide por 1000 para pasarlos a segundos y al resultado le aplica módulo 4, ya que de este modo los únicos resultados posibles van a ser 0, 1, 2 y 3;
   - dado que los milisegundos son crecientes, y por lo tanto también el ciclo de restos 0,1, 2 y 3; para hacerlos decrecientes, a 3 se le restan dichos restos;
@@ -162,7 +162,7 @@ void activar_todo(int digito_actual)
 Esta función:
 - toma "internamente" el valor del pin INTERRUPTOR a través de la función __digitalRead__ y lo guarda en la variable local __entradaINTERRUPTOR__;
 - a través de una estructura de control __if/else__ anidada:
-  - si el Arduino arranca con el interruptor _encendido_, es decir, __entradaINTERRUPTOR__ igual a 0 y bandera global __flag_presionado__ en __false__, calcula el __tiempo_transcurrido__ como variable local haciendo la diferencia entre __millis__ y la variable global __inicio__, para luego asignar dicha variable como parámetro de la función __calcular_digito__ que a su vez pasa su retorno a la función __activar_todo__;
+  - si el Arduino arranca con el interruptor _encendido_, es decir, __entradaINTERRUPTOR__ igual a 0 y bandera global __flag_presionado__ en __false__, calcula el tiempo transcurrido haciendo la diferencia entre __millis__ y la variable global __inicio__, guarda el resultado en la variable ya declarada __tiempo_transcurrido__ y luego asigna dicha variable como parámetro de la función __calcular_digito__ que a su vez pasa su retorno a la función __activar_todo__;
     - cuando el estado del interruptor cambia a _apagado_ por primera vez (__entradaINTERRUPTOR__ igual a 1), guarda los valores de __millis__ en la variable local __tiempo_apagado__ y el __flag_presionado__ pasa a __true__ no volviendo más a __false__ mientras el Arduino siga funcionando;
     - al volver el interruptor a _encendido_, es decir, __entradaINTERRUPTOR__ igual a 1 y bandera global __flag_presionado__ en __true__, declara la variable local __reinicio__ como diferencia entre __millis__ y el valor de __tiempo_apagado__, o sea, vuelve el conteo del tiempo transcurrdio a 0 (o casi 0);
   - si el Arduino arranca con el interruptor _apagado_, el proceso resulta el mismo que en los dos últimos ítems, o sea que inicia el calculo del tiempo transcurrido directamente con las variables __tiempo_apagado__ y __reinicio__.

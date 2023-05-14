@@ -97,11 +97,15 @@ unsigned long calcular_digito(int milliseg)
 ### :file_folder: 3.3. __activar_todo__
 Esta función:
 - recibe valores enteros entre 0 y 4 (incluidos);
+- al valor 4 lo recibe mediante la variable global DESACTIVAR;
 - no tiene retorno;
 - funcionamiento:
-  - enciende y apaga los LEDs mediante __digitalWrite__;
-  - enciende y apaga los segmentos del display mostrando el dígito correspondiente a través de la función auxiliar __activar_display__;
-  - enciende y apaga el zumbador a través de la función auxiliar __activar_buzzer__ (el apagado del zumbador se realiza por defecto dentro de esta última)
+  - utiliza la función __switch__ para ejecutar los __case__ recibidos por parámetro;
+  - en cada __case__:
+    - enciende y apaga los LEDs alternadamente mediante __digitalWrite__;
+    - enciende y apaga el display mostrando el dígito correspondiente a través de la función auxiliar __activar_display__;
+    - enciende y apaga el zumbador a través de la función auxiliar __activar_buzzer__ (el apagado del zumbador se realiza por defecto dentro de esta última);
+    - el __case__ 4 desactiva todos los LEDs y el display.
 
 ~~~ C++
 void activar_todo(int digito_actual)
@@ -154,7 +158,14 @@ void activar_todo(int digito_actual)
   }
 }
 ~~~
-### :file_folder: 3.2. __loop__
+### :file_folder: 3.4. __loop__
+Esta función:
+- toma "internamente" el valor del pin INTERRUPTOR a través de la función __digitalRead__ y lo guarda en la variable local __entradaINTERRUPTOR__;
+- a través de una estructura de control __if/else__ anidada:
+  - si el Arduino arranca con el interruptor _encendido_, es decir, __entradaINTERRUPTOR__ igual a 0 y bandera global __flag_presionado__ en __false__, calcula el __tiempo_transcurrido__ como variable local haciendo la diferencia entre __millis__ y la variable global __inicio__, para luego asignar dicha variable como parámetro de la función __calcular_digito__ que a su vez pasa su retorno a la función __activar_todo__;
+    - cuando el estado del interruptor cambia a _apagado_ por primera vez (__entradaINTERRUPTOR__ igual a 1), guarda los valores de __millis__ en la variable local __tiempo_apagado__ y el __flag_presionado__ pasa a __true__ no volviendo más a __false__ mientras el Arduino siga funcionando;
+    - al volver el interruptor a _encendido_, es decir, __entradaINTERRUPTOR__ igual a 1 y bandera global __flag_presionado__ en __true__, declara la variable local __reinicio__ como diferencia entre __millis__ y el valor de __tiempo_apagado__, o sea, vuelve el conteo del tiempo transcurrdio a 0 (o casi 0);
+  - si el Arduino arranca con el interruptor _apagado_, el proceso resulta el mismo que en los dos últimos ítems, o sea que inicia el calculo del tiempo transcurrido directamente con las variables __tiempo_apagado__ y __reinicio__.
 
 ~~~ C++
 void loop()
@@ -182,11 +193,16 @@ void loop()
 }
 ~~~
 
-## :file_folder: __activar_display__
+## :file_folder: 3.5. __activar_display__
 Esta función:
-- recibe un entero entre 0 y 4 (incluidos);
+- recibe valores enteros entre 0 y 4 (incluidos);
+- al valor 4 lo recibe mediante la variable global DESACTIVAR;
 - no tiene retorno;
-- se encarga de: 
+- funcionamiento:
+  - utiliza la función __switch__ para ejecutar los __case__ recibidos por parámetro;
+  - en cada __case__, enciende y apaga los segmentos del display mostrando el dígito correspondiente a través de la función __digitalWrite__;
+  - el __case__ 4 desactiva todos los segmentos del display.
+
 ~~~ C++
 void activar_display(int digito)
 {
@@ -231,11 +247,16 @@ void activar_display(int digito)
 }
 ~~~
 
-## :file_folder: __activar_buzzer__
+## :file_folder: 3.6. __activar_buzzer__
 Esta función:
-- recibe un entero entre 0 y 4 (incluidos);
+- recibe valores enteros entre 0 y 3 (incluidos);
 - no tiene retorno;
-- se encarga de:
+- funcionamiento:
+  - enciende el zumbador con __digitalWrite__ y setea la frecuencia con __switch__;
+  - en cada __case__, a través de la función __tone__, aplica un valor de frecuencia distinto del anterior;
+  - aplica un __delay__ de medio segundo y detiene la frecuencia con __noTone__;
+  - aplica otro __delay__ de medio segundo y nuevamente con __digitalWrite__ apaga el zumbador.
+
 ~~~ C++
 void activar_buzzer(int digito)
 {

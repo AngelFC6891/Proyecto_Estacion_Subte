@@ -61,7 +61,7 @@ int inicio = millis();
 ### 3. Funciones
 
 ### :file_folder: 3.1. __setup__
-Los pines correspondientes a los LEDs y al zumbador se declaran como OUTPUT (salida). Solamente el pin del interruptor se declara INPUT_PULLUP (entrada), o sea, que al aplicarle la función digitalRead marcará 0 cuando reciba voltaje y 1, cuando no.
+A través de __pinMode__, los pines correspondientes a los _LEDs_ y al _zumbador_ se configuran como OUTPUT (salida). Solamente el pin del _interruptor_ se configura INPUT_PULLUP (entrada), lo cual implica que al aplicarle la función __digitalRead__ arrojará 0 cuando reciba voltaje y 1, cuando no.
 ~~~ C++
 void setup()
 {
